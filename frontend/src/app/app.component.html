@@ -1,0 +1,103 @@
+
+<header class="header">
+  <h2>Campus Facility Portal</h2>
+  <nav>
+    <a href="#home">Home</a>
+    <a href="#submit">Submit Request</a>
+    <a href="#records">Saved Records</a>
+  </nav>
+</header>
+
+<main>
+  <section id="home" class="hero">
+    <h1>Welcome to Campus Facility Portal</h1>
+    <p>Report campus facility problems and help improve our college.</p>
+    <a class="hero-button" href="#submit">Submit a Request</a>
+  </section>
+
+  <section id="submit" class="panel">
+    <h2>Submit Facility Request</h2>
+
+    <form (ngSubmit)="submitRequest()" #requestForm="ngForm">
+      <label for="name">Student Name</label>
+      <input id="name" name="name" [(ngModel)]="formData.name"
+             placeholder="Enter your name" required />
+
+      <label for="department">Department</label>
+      <input id="department" name="department"
+             [(ngModel)]="formData.department"
+             placeholder="Enter department" required />
+
+      <label for="facility">Facility Type</label>
+      <select id="facility" name="facility"
+              [(ngModel)]="formData.facility" required>
+        <option value="Computer Lab">Computer Lab</option>
+        <option value="Library">Library</option>
+        <option value="Classroom">Classroom</option>
+        <option value="Washroom">Washroom</option>
+        <option value="Electricity">Electricity</option>
+        <option value="Water Supply">Water Supply</option>
+        <option value="Other">Other</option>
+      </select>
+
+      <label for="description">Problem Description</label>
+      <textarea id="description" name="description"
+                [(ngModel)]="formData.description"
+                placeholder="Describe the problem"
+                rows="4" required></textarea>
+
+      <button type="submit"
+              [disabled]="loading || requestForm.invalid">
+        {{ loading ? 'Submitting...' : 'Submit Request' }}
+      </button>
+    </form>
+
+    <p *ngIf="successMessage" class="success">
+      {{ successMessage }}
+    </p>
+
+    <p *ngIf="errorMessage" class="error">
+      {{ errorMessage }}
+    </p>
+  </section>
+
+  <section id="records" class="panel">
+    <h2>Saved Facility Requests</h2>
+    <p>Total Requests: {{ requests.length }}</p>
+
+    <button type="button" (click)="loadRequests()">Refresh Records</button>
+
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>S.No.</th>
+            <th>Name</th>
+            <th>Department</th>
+            <th>Facility</th>
+            <th>Description</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let request of requests; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td>{{ request.name }}</td>
+            <td>{{ request.department }}</td>
+            <td>{{ request.facility }}</td>
+            <td>{{ request.description }}</td>
+            <td>{{ request.createdAt | date:'dd-MM-yyyy HH:mm' }}</td>
+          </tr>
+
+          <tr *ngIf="requests.length === 0">
+            <td colspan="6">No requests saved yet.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+<footer>
+  Campus Facility Portal | College Lab Project
+</footer>
